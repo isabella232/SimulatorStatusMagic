@@ -123,6 +123,7 @@ typedef struct {
 @synthesize bluetoothEnabled;
 @synthesize batteryDetailEnabled;
 @synthesize networkType;
+@synthesize airplaneMode;
 
 - (void)enableOverrides
 {

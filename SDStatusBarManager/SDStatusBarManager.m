@@ -68,6 +68,7 @@ static NSString * const SDStatusBarManagerTimeStringKey = @"time_string";
   self.overrider.bluetoothConnected = self.bluetoothState == SDStatusBarManagerBluetoothVisibleConnected;
   self.overrider.batteryDetailEnabled = self.batteryDetailEnabled;
   self.overrider.networkType = self.networkType;
+  self.overrider.airplaneMode = self.airplaneMode;
 
   [self.overrider enableOverrides];
 }

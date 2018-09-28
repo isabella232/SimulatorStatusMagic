@@ -12,7 +12,7 @@
 typedef NS_ENUM(int, StatusBarItem) {
   // 0
   DoNotDisturb = 1,
-  // 2
+  AirplaneModeIndex = 2,
   SignalStrengthBars = 3,
   // 4
   // 5
@@ -155,6 +155,7 @@ typedef struct {
 @synthesize bluetoothEnabled;
 @synthesize batteryDetailEnabled;
 @synthesize networkType;
+@synthesize airplaneMode;
 
 - (void)enableOverrides {
   StatusBarOverrideData *overrides = [UIStatusBarServer getStatusBarOverrideData];
@@ -169,6 +170,10 @@ typedef struct {
     overrides->values.itemIsEnabled[SignalStrengthBars] = 1;
     overrides->overrideGsmSignalStrengthBars = 1;
     overrides->values.gsmSignalStrengthBars = 5;
+  } else {
+    overrides->overrideItemIsEnabled[SignalStrengthBars] = 0;
+    overrides->values.itemIsEnabled[SignalStrengthBars] = 0;
+    overrides->overrideGsmSignalStrengthBars = 0;
   }
   
   overrides->overrideDataNetworkType = self.networkType != SDStatusBarManagerNetworkTypeWiFi;
@@ -201,6 +206,9 @@ typedef struct {
     overrides->overrideBluetoothConnected = self.bluetoothConnected;
     overrides->values.bluetoothConnected = self.bluetoothConnected;
   }
+    
+  overrides->overrideItemIsEnabled[AirplaneModeIndex] = self.airplaneMode;
+  overrides->values.itemIsEnabled[AirplaneModeIndex] = self.airplaneMode;
   
   // Actually update the status bar
   [UIStatusBarServer postStatusBarOverrideData:overrides];
