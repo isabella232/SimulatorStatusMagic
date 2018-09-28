@@ -13,7 +13,7 @@ typedef NS_ENUM(int, StatusBarItem) {
   // 0
   // 1
   // 2
-  // 3
+  AirplaneModeIndex = 3,
   SignalStrengthBars = 4,
   SecondarySignalStrengthBars = 5,
   // 6
@@ -179,6 +179,7 @@ typedef struct {
 @synthesize bluetoothEnabled;
 @synthesize batteryDetailEnabled;
 @synthesize networkType;
+@synthesize airplaneMode;
 
 - (void)enableOverrides {
   StatusBarOverrideData *overrides = [UIStatusBarServer getStatusBarOverrideData];
@@ -189,11 +190,18 @@ typedef struct {
 
   // Enable 5 bars of mobile (iPhone only)
   if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-    overrides->overrideItemIsEnabled[SignalStrengthBars] = 1;
-    overrides->values.itemIsEnabled[SignalStrengthBars] = 1;
-    overrides->overrideGsmSignalStrengthBars = 1;
-    overrides->values.gsmSignalStrengthBars = 5;
+    if (!self.airplaneMode) {
+      overrides->overrideItemIsEnabled[SignalStrengthBars] = 1;
+      overrides->values.itemIsEnabled[SignalStrengthBars] = 1;
+      overrides->overrideGsmSignalStrengthBars = 1;
+      overrides->values.gsmSignalStrengthBars = 5;
+    } else {
+      overrides->overrideItemIsEnabled[SignalStrengthBars] = 0;
+      overrides->values.itemIsEnabled[SignalStrengthBars] = 0;
+      overrides->overrideGsmSignalStrengthBars = 0;
+    }
   }
+
 
   overrides->overrideDataNetworkType = self.networkType != SDStatusBarManagerNetworkTypeWiFi;
   overrides->values.dataNetworkType = self.networkType - 1;
@@ -225,6 +233,9 @@ typedef struct {
     overrides->overrideBluetoothConnected = self.bluetoothConnected;
     overrides->values.bluetoothConnected = self.bluetoothConnected;
   }
+    
+  overrides->overrideItemIsEnabled[AirplaneModeIndex] = self.airplaneMode;
+  overrides->values.itemIsEnabled[AirplaneModeIndex] = self.airplaneMode;
 
   // Actually update the status bar
   [UIStatusBarServer postStatusBarOverrideData:overrides];

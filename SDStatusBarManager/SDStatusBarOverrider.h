@@ -35,6 +35,7 @@
 @property (assign, nonatomic) BOOL bluetoothConnected;
 @property (assign, nonatomic) BOOL batteryDetailEnabled;
 @property (assign, nonatomic) SDStatusBarManagerNetworkType networkType;
+@property (assign, nonatomic) BOOL airplaneMode;
 
 - (void)enableOverrides;
 - (void)disableOverrides;

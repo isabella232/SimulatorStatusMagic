@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, SDStatusBarManagerNetworkType)
 @property (assign, nonatomic) SDStatusBarManagerBluetoothState bluetoothState;
 @property (assign, nonatomic) SDStatusBarManagerNetworkType networkType;
 @property (assign, nonatomic) BOOL batteryDetailEnabled;
+@property (assign, nonatomic) BOOL airplaneMode;
 
 - (void)enableOverrides;
 - (void)disableOverrides;
